@@ -4,7 +4,7 @@ import { AppContext } from '../../context/AppContext';
 import Sort from '../Sort/Sort';
 
 export default function ItemsHeader() {
-  const { items } = useContext(AppContext);
+  const { items, setOption } = useContext(AppContext);
   
   return (
     <div className="d-flex justify-content-between align-items-center mb-4">
@@ -14,11 +14,11 @@ export default function ItemsHeader() {
       </div>
 
       <div className="">
-        <h4>{`${items.length} Products Found`}</h4>
+        <h4>{items ? `${items.length} Products Found` : 'Loading...'}</h4>
       </div>
 
       <div>
-        <Sort/>
+        <Sort setSortOption={setOption} />
       </div>
       
     </div>

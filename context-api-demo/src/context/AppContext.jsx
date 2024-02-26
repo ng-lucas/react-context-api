@@ -6,6 +6,7 @@ export const AppProvider = ({ children }) => {
   const [categories, setCategories] = useState(null);
   const [companies, setCompanies] = useState(null);
   const [items, setItems] = useState(null);
+  const [option, setOption] = useState('default');
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -38,7 +39,7 @@ export const AppProvider = ({ children }) => {
     fetchItems();
   }, [])
 
-  return <AppContext.Provider value={{categories, companies, items}}>
+  return <AppContext.Provider value={{categories, companies, items, option, setOption}}>
     {children}
   </AppContext.Provider>
 }

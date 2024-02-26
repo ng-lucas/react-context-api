@@ -1,15 +1,54 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { convertToUSD, capitalizeFirstChar } from '../../helper';
 import styles from './Items.module.scss';
 
 export default function Items() {
-  const { items } = useContext(AppContext);
+  const { items, option } = useContext(AppContext);
+  const [dataItems, setDataItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (items && option !== 'default') {
+      let sortedItems;
+  
+      switch (option) {
+        case 'a-z':
+          sortedItems = [...items].sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case 'z-a':
+          sortedItems = [...items].sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        case 'company':
+          sortedItems = [...items].sort((a, b) => a.company.localeCompare(b.company));
+          break;
+        case 'category':
+          sortedItems = [...items].sort((a, b) => a.category.localeCompare(b.category));
+          break;
+        case 'low-to-high':
+          sortedItems = [...items].sort((a, b) => a.price - b.price);
+          break;
+        case 'high-to-low':
+          sortedItems = [...items].sort((a, b) => b.price - a.price);
+          break;
+        default:
+          sortedItems = items;
+      }
+      setDataItems(sortedItems);
+    } else if (items) {
+      setDataItems(items);
+    }
+    setIsLoading(false);
+  }, [items, option])
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='cards-wrapper container-fluid px-1'>
       <div className="row">
-        {items && items.map((item, index) => (
+        {dataItems.map((item, index) => (
           <div className="col-lg-4 mb-4" key={index}>
             <div className="card p-2">
               <img src={item.image} className={`card-img-top ${styles.image}`} alt="..." />
@@ -27,9 +66,6 @@ export default function Items() {
           </div>
         ))}
       </div>
-      
-
     </div>
   )
 }
-
