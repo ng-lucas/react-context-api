@@ -7,12 +7,24 @@ export const AppProvider = ({ children }) => {
   const [companies, setCompanies] = useState(null);
   const [items, setItems] = useState(null);
   const [option, setOption] = useState('default');
+  const [inputValue, setInputValue] = useState('');
 
   //select company name
   const [selectedCompany, setSelectedCompany] = useState(null);
 
   //select category name
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  //search data
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+  const clearData = () => {
+    setSelectedCompany(null);
+    setSelectedCategory(null);
+    setSearchQuery('');
+    setInputValue('');
+  }
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -45,7 +57,23 @@ export const AppProvider = ({ children }) => {
     fetchItems();
   }, [])
 
-  return <AppContext.Provider value={{categories, companies, items, option, setOption, selectedCompany, setSelectedCompany, selectedCategory, setSelectedCategory}}>
+  return <AppContext.Provider 
+    value={{
+      categories,
+      companies,
+      items,
+      option,
+      setOption,
+      selectedCompany,
+      setSelectedCompany,
+      selectedCategory,
+      setSelectedCategory,
+      searchQuery, 
+      setSearchQuery,
+      inputValue,
+      setInputValue,
+      clearData
+    }}>
     {children}
   </AppContext.Provider>
 }

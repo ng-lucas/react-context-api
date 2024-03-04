@@ -4,7 +4,7 @@ import { convertToUSD, capitalizeFirstChar } from '../../helper';
 import styles from './Items.module.scss';
 
 export default function Items() {
-  const { items, option, selectedCompany, selectedCategory } = useContext(AppContext);
+  const { items, option, selectedCompany, selectedCategory, searchQuery } = useContext(AppContext);
   const [dataItems, setDataItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -45,11 +45,15 @@ export default function Items() {
       if (selectedCategory) {
         filteredItems = filteredItems.filter(item => item.category === selectedCategory);
       }
+
+      if (searchQuery) {
+        filteredItems = filteredItems.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      }
   
       setDataItems(filteredItems);
     }
     setIsLoading(false);
-  }, [items, option, selectedCompany, selectedCategory])
+  }, [items, option, selectedCompany, selectedCategory, searchQuery])
 
   if (isLoading) {
     return <div>Loading...</div>;
