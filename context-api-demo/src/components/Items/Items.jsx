@@ -4,7 +4,7 @@ import { convertToUSD, capitalizeFirstChar } from '../../helper';
 import styles from './Items.module.scss';
 
 export default function Items() {
-  const { items, option } = useContext(AppContext);
+  const { items, option, selectedCompany, selectedCategory } = useContext(AppContext);
   const [dataItems, setDataItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,10 +36,20 @@ export default function Items() {
       }
       setDataItems(sortedItems);
     } else if (items) {
-      setDataItems(items);
+      let filteredItems = items;
+  
+      if (selectedCompany) {
+        filteredItems = filteredItems.filter(item => item.company === selectedCompany);
+      }
+  
+      if (selectedCategory) {
+        filteredItems = filteredItems.filter(item => item.category === selectedCategory);
+      }
+  
+      setDataItems(filteredItems);
     }
     setIsLoading(false);
-  }, [items, option])
+  }, [items, option, selectedCompany, selectedCategory])
 
   if (isLoading) {
     return <div>Loading...</div>;
